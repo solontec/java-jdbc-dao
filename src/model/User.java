@@ -8,10 +8,21 @@ public class User {
     Scanner sc = new Scanner(System.in);
     UserDAO dao = new UserDAO();
 
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private String email;
     private String senha;
 
-    public User(String email, String senha) {
+    public User(int id, String email, String senha) {
+        this.id = id;
         this.email = email;
         this.senha = senha;
     }
@@ -32,18 +43,7 @@ public class User {
         this.senha = senha;
     }
 
-    public void cadastrarCliente(){
-        System.out.println("Email: ");
-        String email = sc.nextLine();
 
-        System.out.println("Senha: ");
-        String senha = sc.nextLine();
 
-        User user = new User(email, senha);
-
-        dao.cadastrar(user);
-        System.out.println("Cadastrou");
-
-    }
 
 }

@@ -23,6 +23,8 @@ public class Main {
             System.out.println("MENU");
             System.out.println("1 - Cadastrar Cliente");
             System.out.println("2 Listar clientes");
+            System.out.println("3 atualizar clientes");
+            System.out.println("4 deletar clientes");
             System.out.println("0 Sair ");
             System.out.print("opção");
             opcao = scanner.nextInt();
@@ -36,7 +38,10 @@ public class Main {
                     System.out.println("Senha");
                     String senha = scanner.nextLine();
 
-                    User user = new User(email, senha);
+                    System.out.println("ID");
+                    int id = scanner.nextInt();
+
+                    User user = new User(id, email, senha);
                     dao.cadastrar(user);
                     System.out.println("Cadastrou");
                     break;
@@ -56,7 +61,36 @@ public class Main {
                         }
                     }
                     break;
+                case 3:
 
+                    System.out.println("id");
+                    int idUpdate = scanner.nextInt();
+                    scanner.nextLine();
+
+
+                    scanner.nextLine();
+                    System.out.println("Senha");
+                    String senhaUpdate = scanner.nextLine();
+
+
+
+                    User userUpdate = new User(idUpdate, null, senhaUpdate);
+                    dao.atualizar(userUpdate);
+
+                    System.out.println("atualizado os dados");
+
+                case 4:
+                    System.out.println("Delete o user");
+                    scanner.nextLine();
+
+                    System.out.println("insira o id do user");
+                    int idDelet = scanner.nextInt();
+
+                    User userDelet = new User(idDelet, null, null);
+
+                    dao.deletar(userDelet);
+
+                    System.out.println("usuario deletado com sucesso");
                 case 0:
                     System.out.println("Saindo");
                     break;

@@ -15,7 +15,7 @@ public class UserDAO {
         if(emailExists(user.getEmail())){
             throw new RuntimeException("Email já existe");
         }
-        String sql = "INSERT INTO usuarios(email, senha) VALUES(?,?)";
+        String sql = "INSERT INTO usuarios( email, senha) VALUES(?,?)";
 
         try(
                 Connection conn = Conectar.getConnection();
@@ -25,6 +25,7 @@ public class UserDAO {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, user.getEmail());
             stmt.setString(2, user.getSenha());
+
 
             stmt.execute();
             System.out.println("salvou cliente no banco");
@@ -36,7 +37,7 @@ public class UserDAO {
 
     public List<User> listar(){
         List<User> users = new ArrayList<>();
-        String sql = "SELECT email, senha FROM usuarios";
+        String sql = "SELECT id, email, senha FROM usuarios";
 
         try(
                 Connection conn = Conectar.getConnection();
@@ -47,6 +48,7 @@ public class UserDAO {
             while(resultado.next()){
                 users.add(
                         new User(
+                                resultado.getInt("id"),
                                 resultado.getString("email"),
                                 resultado.getString("senha")
                         )
@@ -63,7 +65,6 @@ public class UserDAO {
 
     public boolean emailExists(String email){
         String sql = "SELECT email FROM usuarios WHERE email = ?";
-
         try(
                 Connection conn = Conectar.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql);
@@ -77,6 +78,40 @@ public class UserDAO {
         }
         return false;
 
+    }
+
+    public void atualizar(User user){
+        String sql = "UPDATE usuarios SET senha = ? WHERE id = ?";
+
+        try(
+                Connection conn = Conectar.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ){
+            stmt.setString(1, user.getSenha());
+            stmt.setInt(2, user.getId());
+
+            int result = stmt.executeUpdate();
+            System.out.println("Atualizou dados do cliente");
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public void deletar(User user){
+        String sql = "DELETE FROM usuarios WHERE id = ?";
+
+        try(
+                Connection conn = Conectar.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ){
+            stmt.setInt(1, user.getId());
+            int result = stmt.executeUpdate();
+            System.out.println("deletou o user" + user.getId());
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
 
